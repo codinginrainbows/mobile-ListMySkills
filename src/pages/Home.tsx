@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import {
     StyleSheet,
     Text,
@@ -7,26 +8,65 @@ import {
 } from 'react-native';
 
 export function Home() {
+    const [newSkill, setNewSkill] = useState('')
+    const [listMySkills, setListMySkills] = useState([])
+
+    function handleAddNewSkill() {
+        setListMySkills(prevState => [...prevState, newSkill])
+        setNewSkill('')
+    }
+
+    function handleClearSkillList() {
+        setListMySkills([])
+    }
+
+
     return (
         <View style={styles.container}>
-            <Text style={styles.title}>Welcome, Gabriel!</Text>
+            <Text style={styles.title}></Text>
 
+            {/* adding skills */}
             <TextInput
                 style={styles.input}
                 placeholder='New skill'
                 placeholderTextColor='#333'
+                onChangeText={setNewSkill}
+                value={newSkill}
             />
             <TouchableOpacity
-                style={styles.button}
+                style={styles.buttonAdd}
                 activeOpacity={.6}
+                onPress={handleAddNewSkill}
             >
-                <Text style={styles.buttonText}>Add</Text>
+                <Text style={styles.buttonText}>ADD</Text>
             </TouchableOpacity>
 
             <Text style={[styles.title, { marginTop: 40 }]}>
-                My Skills:
+                Skill List:
             </Text>
 
+            {listMySkills.map(skill => (
+                <View style={styles.skillContainerControl}>
+                    <TouchableOpacity
+                        key={skill}
+                        style={styles.skillContainer}
+                        activeOpacity={.6}
+                    >
+                        <Text style={styles.skillText}>
+                            {skill}
+                        </Text>
+                    </TouchableOpacity>
+                </View>
+            ))}
+
+            {/* removing skills */}
+            <TouchableOpacity
+                style={styles.buttonRemove}
+                activeOpacity={.6}
+                onPress={handleClearSkillList}
+            >
+                <Text style={styles.buttonText}>CLEAR</Text>
+            </TouchableOpacity>
         </View>
     );
 }
@@ -55,7 +95,7 @@ const styles = StyleSheet.create({
         paddingVertical: 10,
         paddingHorizontal: 20,
     },
-    button: {
+    buttonAdd: {
         width: '100%',
         height: 50,
         backgroundColor: '#A370F7',
@@ -64,8 +104,36 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center'
     },
+    buttonRemove: {
+        width: '100%',
+        height: 50,
+        backgroundColor: '#FF392E',
+        marginTop: 20,
+        borderRadius: 4,
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
     buttonText: {
         color: '#fff',
+        fontSize: 20,
+        fontWeight: 'bold',
+    },
+    skillContainerControl: {
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    skillContainer: {
+        width: '90%',
+        paddingVertical: 14,
+        paddingHorizontal: 14,
+        backgroundColor: '#1F1E25',
+        marginTop: 14,
+        borderRadius: 50,
+        alignItems: 'center',
+
+    },
+    skillText: {
+        color: '#F7F7F7',
         fontSize: 18,
         fontWeight: 'bold',
     }
