@@ -4,7 +4,8 @@ import {
     Text,
     View,
     TextInput,
-    TouchableOpacity
+    TouchableOpacity,
+    FlatList
 } from 'react-native';
 
 import { ButtonAdd } from '../Components/ButtonAdd';
@@ -16,7 +17,7 @@ export function Home() {
 
     function handleAddNewSkill() {
         setListMySkills(prevState => [...prevState, newSkill])
-        setNewSkill('')
+        setNewSkill('') //clear input field
     }
 
     function handleClearSkillList() {
@@ -27,10 +28,9 @@ export function Home() {
     return (
         <View style={styles.container}>
             <Text style={styles.title}>
-                Welcome InnerSpeaker
+                User: innerspeaker
             </Text>
 
-            {/* adding skills */}
             <TextInput
                 style={styles.input}
                 placeholder='New skill'
@@ -55,9 +55,19 @@ export function Home() {
                 </TouchableOpacity>
             </View>
 
-            {listMySkills.map(skill => (
+            {/* alternative for ScrollView that does not generate the whole list all at once
+             FlatList does it broken in pieces which on the other hand brings performance */}
+            <FlatList
+                data={listMySkills}
+                keyExtractor={skill => skill}
+                renderItem={({ item }) => (
+                    <SkillsCard skill={item} />
+                )}
+            />
+
+            {/* {listMySkills.map(skill => (
                 <SkillsCard skill={skill} key={skill} />
-            ))}
+            ))} */}
 
         </View>
     );
@@ -67,7 +77,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: '#121015',
-        paddingVertical: 80,
+        paddingVertical: 60,
         paddingHorizontal: 40,
     },
     title: {
