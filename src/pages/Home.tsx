@@ -8,6 +8,7 @@ import {
 } from 'react-native';
 
 import { ButtonAdd } from '../Components/ButtonAdd';
+import { SkillsCard } from '../Components/SkillsCard';
 
 export function Home() {
     const [newSkill, setNewSkill] = useState('')
@@ -40,31 +41,23 @@ export function Home() {
 
             <ButtonAdd addSkill={handleAddNewSkill} />
 
-            <Text style={[styles.title, { marginTop: 40 }]}>
-                Skill List:
-            </Text>
+            <View style={styles.buttonContainer}>
+                <Text style={[styles.title, { marginTop: 40 }]}>
+                    Skill List:
+                </Text>
+
+                <TouchableOpacity
+                    style={styles.buttonRemove}
+                    activeOpacity={.6}
+                    onPress={handleClearSkillList}
+                >
+                    <Text style={styles.buttonText}>CLEAR</Text>
+                </TouchableOpacity>
+            </View>
 
             {listMySkills.map(skill => (
-                <View style={styles.skillContainerControl}>
-                    <TouchableOpacity
-                        key={skill}
-                        style={styles.skillContainer}
-                        activeOpacity={.6}
-                    >
-                        <Text style={styles.skillText}>
-                            {skill}
-                        </Text>
-                    </TouchableOpacity>
-                </View>
+                <SkillsCard skill={skill} key={skill} />
             ))}
-
-            <TouchableOpacity
-                style={styles.buttonRemove}
-                activeOpacity={.6}
-                onPress={handleClearSkillList}
-            >
-                <Text style={styles.buttonText}>CLEAR</Text>
-            </TouchableOpacity>
 
         </View>
     );
@@ -80,7 +73,7 @@ const styles = StyleSheet.create({
     title: {
         color: '#f7f7f7',
         fontSize: 24,
-        fontWeight: 'bold'
+        fontWeight: 'bold',
     },
     input: {
         width: '100%',
@@ -94,32 +87,24 @@ const styles = StyleSheet.create({
         paddingVertical: 10,
         paddingHorizontal: 20,
     },
+    buttonContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between'
+    },
     buttonRemove: {
-        width: '100%',
-        height: 50,
+        width: '30%',
+        height: 36,
         backgroundColor: '#FF392E',
         marginTop: 20,
         borderRadius: 4,
         alignItems: 'center',
         justifyContent: 'center'
-    },
-    skillContainerControl: {
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-    skillContainer: {
-        width: '90%',
-        paddingVertical: 14,
-        paddingHorizontal: 14,
-        backgroundColor: '#1F1E25',
-        marginTop: 14,
-        borderRadius: 50,
-        alignItems: 'center',
 
     },
-    skillText: {
-        color: '#F7F7F7',
-        fontSize: 18,
+    buttonText: {
+        color: '#fff',
+        fontSize: 20,
         fontWeight: 'bold',
-    }
+    },
 });

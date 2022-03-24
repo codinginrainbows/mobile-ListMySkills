@@ -1,6 +1,10 @@
 import { TouchableOpacity, Text, StyleSheet } from "react-native";
 
-export function ButtonAdd({ addSkill }) {
+interface ButtonAddProps {
+    addSkill: () => void;
+}
+
+export function ButtonAdd({ addSkill }: ButtonAddProps) {
     return (
         <TouchableOpacity
             style={styles.buttonAdd}
