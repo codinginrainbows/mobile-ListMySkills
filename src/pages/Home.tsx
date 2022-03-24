@@ -7,6 +7,8 @@ import {
     TouchableOpacity
 } from 'react-native';
 
+import { ButtonAdd } from '../Components/ButtonAdd';
+
 export function Home() {
     const [newSkill, setNewSkill] = useState('')
     const [listMySkills, setListMySkills] = useState([])
@@ -23,7 +25,9 @@ export function Home() {
 
     return (
         <View style={styles.container}>
-            <Text style={styles.title}></Text>
+            <Text style={styles.title}>
+                Welcome InnerSpeaker
+            </Text>
 
             {/* adding skills */}
             <TextInput
@@ -33,13 +37,8 @@ export function Home() {
                 onChangeText={setNewSkill}
                 value={newSkill}
             />
-            <TouchableOpacity
-                style={styles.buttonAdd}
-                activeOpacity={.6}
-                onPress={handleAddNewSkill}
-            >
-                <Text style={styles.buttonText}>ADD</Text>
-            </TouchableOpacity>
+
+            <ButtonAdd addSkill={handleAddNewSkill} />
 
             <Text style={[styles.title, { marginTop: 40 }]}>
                 Skill List:
@@ -59,7 +58,6 @@ export function Home() {
                 </View>
             ))}
 
-            {/* removing skills */}
             <TouchableOpacity
                 style={styles.buttonRemove}
                 activeOpacity={.6}
@@ -67,6 +65,7 @@ export function Home() {
             >
                 <Text style={styles.buttonText}>CLEAR</Text>
             </TouchableOpacity>
+
         </View>
     );
 }
@@ -95,15 +94,6 @@ const styles = StyleSheet.create({
         paddingVertical: 10,
         paddingHorizontal: 20,
     },
-    buttonAdd: {
-        width: '100%',
-        height: 50,
-        backgroundColor: '#A370F7',
-        marginTop: 20,
-        borderRadius: 4,
-        alignItems: 'center',
-        justifyContent: 'center'
-    },
     buttonRemove: {
         width: '100%',
         height: 50,
@@ -112,11 +102,6 @@ const styles = StyleSheet.create({
         borderRadius: 4,
         alignItems: 'center',
         justifyContent: 'center'
-    },
-    buttonText: {
-        color: '#fff',
-        fontSize: 20,
-        fontWeight: 'bold',
     },
     skillContainerControl: {
         justifyContent: 'center',
