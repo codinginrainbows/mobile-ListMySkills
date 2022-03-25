@@ -10,20 +10,41 @@ import {
 } from 'react-native';
 
 import { ButtonAdd } from '../Components/ButtonAdd';
-import { SkillsCard } from '../Components/SkillsCard';
+import { SkillCard } from '../Components/SkillCard';
+
+import Icon from 'react-native-vector-icons/FontAwesome5';
+
+interface SkillProps {
+    id: string;
+    name: string;
+    date?: Date;
+}
 
 export function Home() {
     const [newSkill, setNewSkill] = useState('')
-    const [listMySkills, setListMySkills] = useState([])
-    const [greeating, setGreeating] = useState('')
+    const [listMySkills, setListMySkills] = useState<SkillProps[]>([])
+    const [greeting, setGreeting] = useState('')
 
     function handleAddNewSkill() {
-        setListMySkills(prevState => [...prevState, newSkill])
-        setNewSkill('') //clear input field
+        const skillData = {
+            id: String(new Date().getTime()),
+            name: newSkill,
+        }
+
+        if (newSkill !== '') {
+            setListMySkills(prevState => [...prevState, skillData])
+            setNewSkill('') //clear input field
+        }
     }
 
     function handleClearSkillList() {
         setListMySkills([])
+    }
+
+    function handleClearSingleSkill(id: string) {
+        setListMySkills(prevState => prevState.filter(
+            skill => skill.id !== id
+        ))
     }
 
     useEffect(() => {
@@ -31,13 +52,13 @@ export function Home() {
 
 
         if (currentTimeOfTheDay >= 6 && currentTimeOfTheDay <= 12) {
-            setGreeating('Good morning, ')
+            setGreeting('Good morning, ')
         } else if (currentTimeOfTheDay > 12 && currentTimeOfTheDay <= 18) {
-            setGreeating('Good afternoon, ')
+            setGreeting('Good afternoon, ')
         } else if (currentTimeOfTheDay >= 17 && currentTimeOfTheDay <= 23) {
-            setGreeating('Good evening, ')
+            setGreeting('Good evening, ')
         } else {
-            setGreeating('Madrugadinha boa, ')
+            setGreeting('Go to sleep, ')
         }
     }, [listMySkills])
 
@@ -46,7 +67,7 @@ export function Home() {
             <StatusBar barStyle="light-content" />
 
             <Text style={styles.title}>
-                <Text style={styles.title}>{greeating}</Text> Gabriel.
+                <Text style={styles.title}>{greeting}</Text> Gabriel.
             </Text>
 
             <TextInput
@@ -57,7 +78,7 @@ export function Home() {
                 value={newSkill}
             />
 
-            <ButtonAdd addSkill={handleAddNewSkill} />
+            <ButtonAdd title='Add' onPress={handleAddNewSkill} />
 
             <View style={styles.buttonContainer}>
                 <Text style={[styles.title, { marginTop: 32, marginBottom: 20 }]}>
@@ -77,9 +98,23 @@ export function Home() {
              FlatList does it broken in pieces which on the other hand brings performance */}
             <FlatList
                 data={listMySkills}
-                keyExtractor={skill => skill}
+                keyExtractor={item => item.id}
                 renderItem={({ item }) => (
-                    <SkillsCard skill={item} />
+                    <View style={styles.skillContainer}>
+                        <SkillCard
+                            skill={item.name}
+
+                        />
+                        <TouchableOpacity
+                            onPress={() => handleClearSingleSkill(item.id)}
+                        >
+                            <Icon
+                                name="trash"
+                                color="#FF5E5B"
+                                size={24}
+                            />
+                        </TouchableOpacity>
+                    </View>
                 )}
             />
 
@@ -136,8 +171,17 @@ const styles = StyleSheet.create({
         fontSize: 20,
         fontWeight: 'bold',
     },
+    skillContainer: {
+        backgroundColor: '#1F1E25',
+
+        marginTop: 10,
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        flexDirection: 'row',
+
+        paddingHorizontal: 24,
+        paddingVertical: 12,
+        borderRadius: 20,
+    }
 });
-function useEffec() {
-    throw new Error('Function not implemented.');
-}
 
