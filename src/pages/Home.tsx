@@ -1,11 +1,12 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
     StyleSheet,
     Text,
     View,
     TextInput,
     TouchableOpacity,
-    FlatList
+    FlatList,
+    StatusBar
 } from 'react-native';
 
 import { ButtonAdd } from '../Components/ButtonAdd';
@@ -14,6 +15,7 @@ import { SkillsCard } from '../Components/SkillsCard';
 export function Home() {
     const [newSkill, setNewSkill] = useState('')
     const [listMySkills, setListMySkills] = useState([])
+    const [greeating, setGreeating] = useState('')
 
     function handleAddNewSkill() {
         setListMySkills(prevState => [...prevState, newSkill])
@@ -24,11 +26,27 @@ export function Home() {
         setListMySkills([])
     }
 
+    useEffect(() => {
+        const currentTimeOfTheDay = new Date().getHours()
+
+
+        if (currentTimeOfTheDay >= 6 && currentTimeOfTheDay <= 12) {
+            setGreeating('Good morning, ')
+        } else if (currentTimeOfTheDay > 12 && currentTimeOfTheDay <= 18) {
+            setGreeating('Good afternoon, ')
+        } else if (currentTimeOfTheDay >= 17 && currentTimeOfTheDay <= 23) {
+            setGreeating('Good evening, ')
+        } else {
+            setGreeating('Madrugadinha boa, ')
+        }
+    }, [listMySkills])
 
     return (
         <View style={styles.container}>
+            <StatusBar barStyle="light-content" />
+
             <Text style={styles.title}>
-                User: innerspeaker
+                <Text style={styles.title}>{greeating}</Text> Gabriel.
             </Text>
 
             <TextInput
@@ -42,7 +60,7 @@ export function Home() {
             <ButtonAdd addSkill={handleAddNewSkill} />
 
             <View style={styles.buttonContainer}>
-                <Text style={[styles.title, { marginTop: 40 }]}>
+                <Text style={[styles.title, { marginTop: 32, marginBottom: 20 }]}>
                     Skill List:
                 </Text>
 
@@ -76,7 +94,7 @@ export function Home() {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#121015',
+        backgroundColor: '#121214',
         paddingVertical: 60,
         paddingHorizontal: 40,
     },
@@ -106,7 +124,8 @@ const styles = StyleSheet.create({
         width: '30%',
         height: 36,
         backgroundColor: '#FF392E',
-        marginTop: 20,
+        marginTop: 32,
+        marginBottom: 20,
         borderRadius: 4,
         alignItems: 'center',
         justifyContent: 'center'
@@ -118,3 +137,7 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
     },
 });
+function useEffec() {
+    throw new Error('Function not implemented.');
+}
+
